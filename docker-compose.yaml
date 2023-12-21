@@ -1,17 +1,26 @@
 version: '3'
 
 services:
-  server:
-    build: ./server
+  express-server:
+    build: ./express-server
     ports:
-      - "80:80"
+      - "3000:3000"
     networks:
       - app-network
 
-  client:
-    build: ./client
+  nginx-proxy:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
-      - server
+      - cpp-server
+    networks:
+      - app-network
+
+  cpp-server:
+    build: ./cpp-server
     networks:
       - app-network
 
