@@ -41,10 +41,10 @@ COPY --from=build /usr/local/include/boost/ /usr/local/include/boost/
 RUN ldconfig
 
 # Copy the binaries from the build stage
-COPY --from=build /app/my_client /app/my_client
+COPY --from=build /app/client /app/client
 
 # Expose the port the app runs on
 EXPOSE 80
 
 # Set the command to run the application
-CMD ["/app/my_client", "0.0.0.0", "80"]
+CMD ["/app/client", "0.0.0.0", "80"]

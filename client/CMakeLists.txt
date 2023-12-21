@@ -11,7 +11,7 @@ find_package(Boost 1.73 REQUIRED COMPONENTS system thread regex log_setup log)
 include_directories(${Boost_INCLUDE_DIR})
 
 # Add executable
-add_executable(my_client client.cpp)
+add_executable(client client.cpp)
 
 # Link libraries
-target_link_libraries(my_client ${Boost_LIBRARIES} Boost::regex Boost::log_setup Boost::log)
+target_link_libraries(client ${Boost_LIBRARIES} Boost::regex Boost::log_setup Boost::log)

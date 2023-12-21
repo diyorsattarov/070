@@ -15,7 +15,7 @@ services:
     depends_on:
       - server
     volumes:
-      - ./my_client/src:/app/src
+      - ./client/src:/app/src
     networks:
       - app-network
 
