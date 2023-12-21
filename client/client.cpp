@@ -11,13 +11,19 @@ using tcp = net::ip::tcp;
 
 using json = nlohmann::json;
 
-int main() {
-    try {
-        auto const host = "server";
-        auto const port = "80";
-        auto const target = "/submit-data";  // Target URI
-        int version = 11;  // HTTP version (11 = 1.1)
+int main(int argc, char* argv[]) {
+    if (argc != 5) {
+        std::cerr << "Usage: " << argv[0] << " <host> <port> <target> <json>\n";
+        return EXIT_FAILURE;
+    }
 
+    auto const host = argv[1];
+    auto const port = argv[2];
+    auto const target = argv[3];
+    auto const json_string = argv[4];  // JSON string
+    int version = 11;  // HTTP version (11 = 1.1)
+
+    try {
         // Set up an IO context and a resolver
         net::io_context ioc;
         tcp::resolver resolver(ioc);
@@ -27,22 +33,16 @@ int main() {
         auto const results = resolver.resolve(host, port);
         stream.connect(results);
 
-        // Create a JSON object
-        json j;
-        j["name"] = "John Doe";
-        j["age"] = 30;
-        j["email"] = "johndoe@example.com";
-
-        // Convert JSON object to string
-        std::string json_string = j.dump();
+        // Parse the JSON string into a JSON object
+        json j = json::parse(json_string);
 
         // Set up the HTTP POST request
         http::request<http::string_body> req{http::verb::post, target, version};
         req.set(http::field::host, host);
         req.set(http::field::user_agent, BOOST_BEAST_VERSION_STRING);
         req.set(http::field::content_type, "application/json");
-        req.content_length(json_string.size());
-        req.body() = json_string;
+        req.content_length(j.dump().size());
+        req.body() = j.dump();
 
         // Send the HTTP request
         http::write(stream, req);

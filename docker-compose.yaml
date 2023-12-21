@@ -5,8 +5,6 @@ services:
     build: ./server
     ports:
       - "80:80"
-    volumes:
-      - ./server/src:/app/src
     networks:
       - app-network
 
@@ -14,8 +12,6 @@ services:
     build: ./client
     depends_on:
       - server
-    volumes:
-      - ./client/src:/app/src
     networks:
       - app-network
 

@@ -38,13 +38,10 @@ RUN apt-get update && apt-get install -y \
 COPY --from=build /usr/local/lib/ /usr/local/lib/
 COPY --from=build /usr/local/include/boost/ /usr/local/include/boost/
 
-RUN ldconfig
+EXPOSE 80
 
 # Copy the binaries from the build stage
 COPY --from=build /app/client /app/client
 
-# Expose the port the app runs on
-EXPOSE 80
-
 # Set the command to run the application
-CMD ["/app/client", "0.0.0.0", "80"]
+CMD ["/app/client", "server", "80", "/submit-data", "{\"key\": \"value\"}"]
