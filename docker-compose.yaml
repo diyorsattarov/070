@@ -1,6 +1,20 @@
 version: '3'
 
 services:
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: my-db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: rootpassword
+    ports:
+      - "3306:3306"    
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - app-network
+
   express-server:
     build: ./express-server
     ports:
@@ -23,7 +37,13 @@ services:
     build: ./cpp-server
     networks:
       - app-network
-
+  cpp-mysql:
+    build: ./cpp-mysql
+    depends_on:
+      - mysql
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  mysql-data:
