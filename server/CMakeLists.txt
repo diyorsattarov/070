@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(MyProgram)
+project(server)
 
 # Set the C++ standard
 set(CMAKE_CXX_STANDARD 17)
@@ -11,7 +11,7 @@ find_package(Boost 1.73 REQUIRED COMPONENTS system thread regex log_setup log)
 include_directories(${Boost_INCLUDE_DIR})
 
 # Add executable
-add_executable(my_program main.cpp)
+add_executable(server main.cpp)
 
 # Link libraries
-target_link_libraries(my_program ${Boost_LIBRARIES} Boost::regex Boost::log_setup Boost::log)
+target_link_libraries(server ${Boost_LIBRARIES} Boost::regex Boost::log_setup Boost::log)
